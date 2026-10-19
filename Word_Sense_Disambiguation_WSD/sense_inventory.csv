@@ -1,0 +1,137 @@
+Sense #,Synset ID,POS,Lemmas / Synonyms,Definition (Gloss),Examples,Direct Hypernyms,Hyponym Count,Meronyms,Antonyms
+1,bank.n.01,n,bank,sloping land (especially the slope beside a body of water),they pulled the canoe up on the bank | he sat on the bank of the river and watched the currents,slope,2,None,None
+2,depository_financial_institution.n.01,n,"depository financial institution, bank, banking concern, banking company",a financial institution that accepts deposits and channels the money into lending activities,he cashed a check at the bank | that bank holds the mortgage on my home,financial institution,11,None,None
+3,bank.n.03,n,bank,a long ridge or pile,a huge bank of earth,ridge,2,None,None
+4,bank.n.04,n,bank,an arrangement of similar objects in a row or in tiers,he operated a bank of switches,array,0,None,None
+5,bank.n.05,n,bank,a supply or stock held in reserve for future use (especially in emergencies),None,reserve,4,None,None
+6,bank.n.06,n,bank,the funds held by a gambling house or the dealer in some gambling games,he tried to break the bank at Monte Carlo,funds,0,None,None
+7,bank.n.07,n,"bank, cant, camber",a slope in the turn of a road or track; the outside is higher than the inside in order to reduce the effects of centrifugal force,None,slope,0,None,None
+8,savings_bank.n.02,n,"savings bank, coin bank, money box, bank",a container (usually with a slot in the top) for keeping money at home,the coin bank was empty,container,1,None,None
+9,bank.n.09,n,"bank, bank building",a building in which the business of banking transacted,the bank is on the corner of Nassau and Witherspoon,depository,0,vault,None
+10,bank.n.10,n,bank,a flight maneuver; aircraft tips laterally about its longitudinal axis (especially in turning),the plane went into a steep bank,flight maneuver,1,None,None
+11,bank.v.01,v,bank,tip laterally,the pilot had to bank the aircraft,tip,0,None,None
+12,bank.v.02,v,bank,enclose with a bank,bank roads,enclose,0,None,None
+13,bank.v.03,v,bank,do business with a bank or keep an account at a bank,Where do you bank in this town?,transact,0,None,None
+14,bank.v.04,v,bank,act as the banker in a game or in gambling,None,act,0,None,None
+15,bank.v.05,v,bank,be in the banking business,None,work,0,None,None
+16,deposit.v.02,v,"deposit, bank",put into a bank account,She deposits her paycheck every month,give,1,None,withdraw
+17,bank.v.07,v,bank,cover with ashes so to control the rate of burning,bank a fire,cover,0,None,None
+18,trust.v.01,v,"trust, swear, rely, bank",have confidence or faith in,We can trust in God | Rely on your friends | bank on your good education | I swear by my grandmother's recipes,believe,3,None,"mistrust, distrust"
+1,interest.n.01,n,"interest, involvement",a sense of concern with and curiosity about someone or something,an interest in music,curiosity,2,None,None
+2,sake.n.01,n,"sake, interest",a reason for wanting something done,for your sake | died for the sake of his country | in the interest of safety | in the common interest,benefit,1,None,None
+3,interest.n.03,n,"interest, interestingness",the power of attracting or holding one's attention (because it is unusual or exciting etc.),they said nothing of great interest | primary colors can add interest to a room,power,5,None,uninterestingness
+4,interest.n.04,n,interest,a fixed charge for borrowing money; usually a percentage of the amount borrowed,how much interest do you pay on your mortgage?,fixed charge,2,None,None
+5,interest.n.05,n,"interest, stake",(law) a right or legal share of something; a financial involvement with something,they have interests all over the world | a stake in the company's future,share,11,None,None
+6,interest.n.06,n,"interest, interest group",(usually plural) a social group whose members control some field of activity and who have common aims,the iron interests stepped up production,social group,2,None,None
+7,pastime.n.01,n,"pastime, interest, pursuit",a diversion that occupies one's time and thoughts (usually pleasantly),sailing is her favorite pastime | his main pastime is gambling | he counts reading among his interests | they criticized the boy for his limited pursuits,diversion,1,None,None
+8,interest.v.01,v,interest,excite the curiosity of; engage the interest of,None,arouse,2,None,bore
+9,concern.v.02,v,"concern, interest, occupy, worry",be on the mind of,I worry about the second Germanic consonant shift,None,0,None,None
+10,matter_to.v.01,v,"matter to, interest",be of importance or consequence,This matters to me!,refer,1,None,None
+1,stock.n.01,n,stock,the capital raised by a corporation through the issue of shares entitling holders to an ownership interest (equity),he owns a controlling share of the company's stock,capital,13,share,None
+2,stock.n.02,n,"stock, inventory",the merchandise that a shop has on hand,they carried a vast inventory of hardware | they stopped selling in exact sizes in order to reduce inventory,merchandise,0,None,None
+3,stock.n.03,n,"stock, gunstock",the handle of a handgun or the butt end of a rifle or shotgun or part of the support of a machine gun or artillery gun,the rifle had been fitted with a special stock,"handle, support",1,None,None
+4,stock_certificate.n.01,n,"stock certificate, stock",a certificate documenting the shareholder's ownership in the corporation,the value of his stocks doubled during the past year,security,1,None,None
+5,store.n.02,n,"store, stock, fund",a supply of something available for future use,he brought back a large store of Cuban cigars,accumulation,5,None,None
+6,lineage.n.01,n,"lineage, line, line of descent, descent, bloodline, blood line, blood, pedigree, ancestry, origin, parentage, stemma, stock",the descendants of one individual,his entire lineage has been warriors,genealogy,2,None,None
+7,breed.n.01,n,"breed, strain, stock",a special variety of domesticated animals within a species,he experimented on a particular breed of white rats | he created a new strain of sheep,"variety, animal group",2,None,None
+8,broth.n.01,n,"broth, stock",liquid in which meat and vegetables are simmered; used as a basis for e.g. soups or sauces,she made gravy with a base of beef stock,soup,4,None,None
+9,stock.n.09,n,stock,the reputation and popularity a person has,his stock was so high he could have been elected mayor,repute,0,None,None
+10,stock.n.10,n,"stock, caudex",persistent thickened stem of a herbaceous perennial plant,None,stalk,0,None,None
+11,stock.n.11,n,stock,a plant or stem onto which a graft is made; especially a plant grown specifically to provide the root part of grafted plants,None,plant part,1,None,None
+12,stock.n.12,n,"stock, gillyflower",any of several Old World plants cultivated for their brightly colored flowers,None,flower,1,None,None
+13,malcolm_stock.n.01,n,"Malcolm stock, stock",any of various ornamental flowering plants of the genus Malcolmia,None,flower,0,None,None
+14,stock.n.14,n,stock,lumber used in the construction of something,they will cut round stock to 1-inch diameter,lumber,0,None,None
+15,stock.n.15,n,stock,the handle end of some implements or tools,he grabbed the cue by the stock,handle,2,None,None
+16,neckcloth.n.01,n,"neckcloth, stock",an ornamental white cravat,None,cravat,0,None,None
+17,livestock.n.01,n,"livestock, stock, farm animal",any animals kept for use or profit,None,placental,0,None,None
+18,stock.v.01,v,"stock, carry, stockpile",have on hand,Do you carry kerosene heaters?,have,0,None,None
+19,stock.v.02,v,stock,equip with a stock,stock a rifle,equip,0,None,None
+20,stock.v.03,v,stock,supply with fish,stock a lake,supply,0,None,None
+21,stock.v.04,v,stock,supply with livestock,stock a farm,supply,0,None,None
+22,stock.v.05,v,"stock, buy in, stock up",amass so as to keep for future use or sale or for a particular occasion or use,let's stock coffee as long as prices are low,supply,2,None,None
+23,stock.v.06,v,stock,provide or furnish with a stock of something,stock the larder with meat,supply,2,None,None
+24,sprout.v.02,v,"sprout, stock",put forth and grow sprouts or shoots,the plant sprouted early this year,grow,0,None,None
+25,banal.s.01,s,"banal, commonplace, hackneyed, old-hat, shopworn, stock, threadbare, timeworn, tired, trite, well-worn",repeated too often; overfamiliar through overuse,bromidic sermons | his remarks were trite and commonplace | hackneyed phrases | a stock answer | repeating threadbare jokes | parroting some timeworn axiom | the trite metaphor `hard as nails',None,0,None,None
+26,stock.s.02,s,stock,routine,a stock answer,None,0,None,None
+27,standard.s.02,s,"standard, stock",regularly and widely used or sold,a standard size | a stock item,None,0,None,None
+1,capital.n.01,n,"capital, working capital",assets available for use in the production of further assets,None,assets,4,None,None
+2,capital.n.02,n,capital,wealth in the form of money or property owned by a person or business and human resources of economic value,None,assets,3,None,None
+3,capital.n.03,n,capital,a seat of government,None,seat,3,None,None
+4,capital.n.04,n,"capital, capital letter, uppercase, upper-case letter, majuscule",one of the large alphabetic characters used as the first letter in writing or printing proper names and sometimes for emphasis,printers once kept the type for capitals and for small letters in separate cases; capitals were kept in the upper half of the type case and so became known as upper-case letters,character,1,None,lowercase
+5,capital.n.05,n,capital,a center that is associated more than any other with some activity or product,the crime capital of Italy | the drug capital of Columbia,center,0,None,None
+6,capital.n.06,n,"Capital, Washington",the federal government of the United States,None,None,0,None,None
+7,das_kapital.n.01,n,"Das Kapital, Capital",a book written by Karl Marx (1867) describing his economic theories,None,None,0,None,None
+8,capital.n.08,n,"capital, chapiter, cap",the upper part of a column that supports the entablature,None,top,0,None,None
+9,capital.s.01,s,capital,first-rate,a capital fellow | a capital idea,None,0,None,None
+10,capital.s.02,s,capital,of primary importance,our capital concern was to avoid defeat,None,0,None,None
+11,capital.s.03,s,"capital, great, majuscule",uppercase,capital A | great A | many medieval manuscripts are in majuscule script,None,0,None,None
+1,chemical_bond.n.01,n,"chemical bond, bond",an electrical force linking atoms,None,attraction,6,None,None
+2,bond.n.02,n,"bond, bond certificate",a certificate of debt (usually interest-bearing or discounted) that is issued by a government or corporation in order to raise money; the issuer is required to pay a fixed sum annually until maturity and then a fixed sum to repay the principal,None,"debt instrument, security",16,None,None
+3,alliance.n.02,n,"alliance, bond",a connection based on kinship or marriage or common interest,the shifting alliances within a large family | their friendship constitutes a powerful bond between them,connection,1,None,None
+4,bail.n.01,n,"bail, bail bond, bond",(criminal law) money that must be forfeited by the bondsman if an accused person fails to appear in court for trial,"the judge set bail at $10,000 | a $10,000 bond was furnished by an alderman",recognizance,0,None,None
+5,shackle.n.01,n,"shackle, bond, hamper, trammel",a restraint that confines or restricts freedom (especially something used to tie down or restrain a prisoner),None,restraint,4,None,None
+6,attachment.n.04,n,"attachment, bond",a connection that fastens things together,None,connection,1,None,None
+7,bond.n.07,n,"bond, bond paper",a superior quality of strong durable white writing paper; originally made for printing documents,None,writing paper,0,None,None
+8,bond.n.08,n,"Bond, Julian Bond",United States civil rights leader who was elected to the legislature in Georgia but was barred from taking his seat because he opposed the Vietnam War (born 1940),None,None,0,None,None
+9,bond.n.09,n,"Bond, James Bond",British secret operative 007 in novels by Ian Fleming,None,None,0,None,None
+10,adhesiveness.n.01,n,"adhesiveness, adhesion, adherence, bond",the property of sticking together (as of glue and wood) or the joining of surfaces of different composition,the mutual adhesiveness of cells | a heated hydraulic press was required for adhesion,stickiness,0,None,None
+11,adhere.v.06,v,"adhere, hold fast, bond, bind, stick, stick to",stick to firmly,Will this wallpaper adhere to the wall?,attach,1,None,None
+12,bind.v.02,v,"bind, tie, attach, bond",create social or emotional ties,The grandparents want to bond with the child,relate,2,None,None
+13,bond.v.03,v,bond,issue bonds on,None,mortgage,0,None,None
+14,bond.v.04,v,"bond, bring together, draw together",bring together in a common cause or emotion,The death of their child had drawn them together,unite,0,None,None
+1,output.n.02,n,"output, yield",production of a certain amount,None,production,1,None,None
+2,return.n.06,n,"return, issue, take, takings, proceeds, yield, payoff",the income or profit arising from such transactions as the sale of land or other property,the average return was about 5%,income,2,None,None
+3,yield.n.03,n,"yield, fruit",an amount of a product,None,product,0,None,None
+4,output.n.04,n,"output, yield, production",the quantity of something (as a commodity) that is created (usually within a given period of time),production was up in the second quarter,indefinite quantity,1,None,None
+5,yield.v.01,v,"yield, give, afford",be the cause or source of,He gave me a lot of trouble | Our meeting afforded much interesting information,supply,2,None,None
+6,give_way.v.03,v,"give way, yield","end resistance, as under pressure or force",The door yielded to repeated blows with a battering ram,change,0,None,None
+7,render.v.04,v,"render, yield, return, give, generate",give or supply,"The cow brings in 5 liters of milk | This year's crop yielded 1,000 bushels of corn | The estate renders some revenue for the family",produce,0,None,None
+8,concede.v.03,v,"concede, yield, cede, grant",give over; surrender or relinquish to the physical control of another,None,give,0,None,None
+9,yield.v.05,v,"yield, relent, soften","give in, as to influence or pressure",None,None,1,None,stand
+10,move_over.v.01,v,"move over, give way, give, ease up, yield",move in order to make room for someone for something,"The park gave way to a supermarket | `Move over,' he told the crowd",move,0,None,None
+11,give.v.09,v,"give, yield",cause to happen or be responsible for,His two singles gave the team the victory,make,0,None,None
+12,concede.v.02,v,"concede, yield, grant",be willing to concede,I grant you this much,agree,1,None,None
+13,succumb.v.02,v,"succumb, yield",be fatally overwhelmed,None,die,0,None,survive
+14,yield.v.10,v,"yield, pay, bear",bring in,interest-bearing accounts | How much does this savings certificate pay annually?,gain,2,None,None
+15,give.v.33,v,"give, yield",be flexible under stress of physical force,This material doesn't give,stretch,0,None,None
+16,yield.v.12,v,yield,cease opposition; stop fighting,None,None,2,None,None
+17,yield.v.13,v,"yield, give in, succumb, knuckle under, buckle under",consent reluctantly,None,accept,1,None,None
+1,plant.n.01,n,"plant, works, industrial plant",buildings for carrying on industrial labor,they built a large plant to manufacture automobiles,building complex,11,None,None
+2,plant.n.02,n,"plant, flora, plant life",(botany) a living organism lacking the power of locomotion,None,organism,32,"plant part, hood",None
+3,plant.n.03,n,plant,an actor situated in the audience whose acting is rehearsed but seems spontaneous to the audience,None,actor,0,None,None
+4,plant.n.04,n,plant,something planted secretly for discovery by another,the police used a plant to trick the thieves | he claimed that the evidence against him was a plant,contrivance,0,None,None
+5,plant.v.01,v,"plant, set","put or set (seeds, seedlings, or plants) into the ground",Let's plant flowers in the garden,put,8,None,None
+6,implant.v.01,v,"implant, engraft, embed, imbed, plant",fix or set securely or deeply,He planted a knee in the back of his opponent | The dentist implanted a tooth in the gum,insert,3,None,None
+7,establish.v.02,v,"establish, found, plant, constitute, institute",set up or lay the groundwork for,establish a new department,initiate,2,None,None
+8,plant.v.04,v,plant,place into a river,plant fish,stock,0,None,None
+9,plant.v.05,v,plant,place something or someone in a certain position in order to secretly observe or deceive,Plant a spy in Moscow | plant bugs in the dissident's apartment,put,0,None,None
+10,plant.v.06,v,"plant, implant",put firmly in the mind,Plant a thought in the students' minds,communicate,0,None,None
+1,balance.n.01,n,balance,a state of equilibrium,None,equilibrium,3,None,imbalance
+2,balance.n.02,n,balance,equality between the totals of the credit and debit sides of an account,None,equality,1,None,None
+3,proportion.n.05,n,"proportion, proportionality, balance",harmonious arrangement or relation of parts or elements within a whole (as in a design); - John Ruskin,in all perfectly beautiful objects there is found the opposition of one part to another and a reciprocal balance,placement,0,None,None
+4,balance.n.04,n,"balance, equilibrium, equipoise, counterbalance",equality of distribution,None,structure,2,None,None
+5,remainder.n.01,n,"remainder, balance, residual, residue, residuum, rest",something left after other parts have been taken away,there was no remainder | he threw away the rest | he took what he wanted and I got the balance,part,1,None,None
+6,balance.n.06,n,balance,the difference between the totals of the credit and debit sides of an account,None,remainder,4,None,None
+7,libra.n.01,n,"Libra, Balance",(astrology) a person who is born while the sun is in Libra,None,person,0,None,None
+8,libra.n.03,n,"Libra, Libra the Balance, Balance, Libra the Scales",the seventh sign of the zodiac; the sun is in this sign from about September 23 to October 22,None,None,0,None,None
+9,symmetry.n.01,n,"symmetry, symmetricalness, correspondence, balance",(mathematics) an attribute of a shape or relation; exact reflection of form on opposite sides of a dividing line or plane,None,spatial property,3,None,asymmetry
+10,counterweight.n.01,n,"counterweight, counterbalance, counterpoise, balance, equalizer, equaliser",a weight that balances another weight,None,weight,2,None,None
+11,balance_wheel.n.01,n,"balance wheel, balance",a wheel that regulates the rate of movement in a machine; especially a wheel oscillating against the hairspring of a timepiece to regulate its beat,None,wheel,0,None,None
+12,balance.n.12,n,balance,a scale for weighing; depends on pull of gravity,None,scale,5,None,None
+13,balance.v.01,v,"balance, equilibrate, equilibrize, equilibrise",bring into balance or equilibrium,She has to balance work and her domestic duties | balance the two weights,match,5,None,unbalance
+14,balance.v.02,v,balance,compute credits and debits of an account,None,account,0,None,None
+15,poise.v.04,v,"poise, balance",hold or carry in equilibrium,None,hold,1,None,None
+16,balance.v.04,v,balance,be in equilibrium,He was balancing on one foot,be,0,None,None
+1,recognition.n.03,n,"recognition, credit",approval,give her recognition for trying | he was given credit for his work | give her credit for trying,approval,3,None,None
+2,credit.n.02,n,credit,money available for a client to borrow,None,assets,6,None,None
+3,credit.n.03,n,"credit, credit entry",an accounting entry acknowledging income or capital items,None,entry,0,None,debit
+4,credit.n.04,n,credit,used in the phrase `to your credit' in order to indicate an achievement deserving praise,she already had several performances to her credit,accomplishment,0,None,None
+5,credit.n.05,n,"credit, deferred payment",arrangement for deferred payment for goods and services,None,payment,0,None,cash
+6,credit.n.06,n,"credit, course credit",recognition by a college or university that a course of studies has been successfully completed; typically measured in semester hours,None,attainment,1,None,None
+7,citation.n.03,n,"citation, cite, acknowledgment, credit, reference, mention, quotation",a short note recognizing a source of information or of a quoted passage,the student's essay failed to list several important citations | the acknowledgments are usually printed at the front of a book | the article includes mention of similar clinical cases,note,2,None,None
+8,credit.n.08,n,credit,an entry on a list of persons who contributed to a film or written work,the credits were given at the end of the film,title,0,None,None
+9,credit_rating.n.01,n,"credit rating, credit","an estimate, based on previous dealings, of a person's or an organization's ability to fulfill their financial commitments",None,estimate,0,None,None
+10,credit.v.01,v,credit,give someone credit for something,We credited her for saving our jobs,impute,0,None,None
+11,accredit.v.03,v,"accredit, credit",ascribe an achievement to,She was not properly credited in the program,impute,0,None,None
+12,credit.v.03,v,credit,accounting: enter as credit,We credit your account with $100,account,1,None,debit
+13,credit.v.04,v,credit,have trust in; trust in the truth or veracity of,None,trust,1,None,None
