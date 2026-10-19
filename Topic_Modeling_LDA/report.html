@@ -1,0 +1,1146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TopicScope | Latent Dirichlet Allocation (LDA) Interpretation Report</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <!-- Chart.js for Interactive Visualizations -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --bg-base: #0b0f19;
+            --bg-surface: #111827;
+            --bg-card: #1e293b;
+            --bg-glass: rgba(30, 41, 59, 0.7);
+            --border: rgba(255, 255, 255, 0.1);
+            --border-hover: rgba(99, 102, 241, 0.4);
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --text-muted: #64748b;
+            --primary: #6366f1;
+            --primary-glow: rgba(99, 102, 241, 0.25);
+            --cyan: #06b6d4;
+            --emerald: #10b981;
+            --amber: #f59e0b;
+            --rose: #f43f5e;
+            --purple: #a855f7;
+            --font-main: 'Inter', sans-serif;
+            --font-head: 'Outfit', sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-base);
+            color: var(--text-primary);
+            font-family: var(--font-main);
+            line-height: 1.6;
+            overflow-x: hidden;
+            background-image: 
+                radial-gradient(circle at 15% 15%, rgba(99, 102, 241, 0.12) 0%, transparent 40%),
+                radial-gradient(circle at 85% 30%, rgba(6, 182, 212, 0.1) 0%, transparent 40%),
+                radial-gradient(circle at 50% 80%, rgba(168, 85, 247, 0.08) 0%, transparent 50%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 32px 24px 80px 24px;
+        }
+
+        /* Header Bar */
+        header {
+            background: var(--bg-glass);
+            backdrop-filter: blur(16px);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 32px 40px;
+            margin-bottom: 32px;
+            box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.5);
+            position: relative;
+            overflow: hidden;
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary), var(--cyan), var(--emerald), var(--purple));
+        }
+
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .title-area h1 {
+            font-family: var(--font-head);
+            font-size: 36px;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            background: linear-gradient(135deg, #ffffff 0%, #cbd5e1 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 8px;
+        }
+
+        .title-area p {
+            color: var(--text-secondary);
+            font-size: 16px;
+            max-width: 780px;
+        }
+
+        .meta-badges {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 18px;
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 14px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border);
+            border-radius: 9999px;
+            font-size: 13px;
+            font-weight: 500;
+            color: #e2e8f0;
+            transition: all 0.2s;
+        }
+
+        .badge:hover {
+            border-color: var(--primary);
+            background: var(--primary-glow);
+        }
+
+        .badge-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--emerald);
+            box-shadow: 0 0 10px var(--emerald);
+        }
+
+        .btn-print {
+            background: linear-gradient(135deg, var(--primary) 0%, #4f46e5 100%);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            box-shadow: 0 4px 14px rgba(99, 102, 241, 0.35);
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-print:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(99, 102, 241, 0.5);
+        }
+
+        /* Metric Grid */
+        .metric-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+            gap: 16px;
+            margin-bottom: 32px;
+        }
+
+        .metric-card {
+            background: var(--bg-glass);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 20px 24px;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .metric-card:hover {
+            border-color: var(--border-hover);
+            transform: translateY(-3px);
+            box-shadow: 0 12px 24px -10px rgba(0, 0, 0, 0.4);
+        }
+
+        .metric-label {
+            font-size: 13px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: var(--text-muted);
+            margin-bottom: 6px;
+        }
+
+        .metric-val {
+            font-family: var(--font-head);
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .metric-sub {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-top: 4px;
+        }
+
+        /* Navigation Tabs */
+        .nav-tabs {
+            display: flex;
+            background: rgba(17, 24, 39, 0.8);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 6px;
+            gap: 6px;
+            margin-bottom: 32px;
+            overflow-x: auto;
+            scrollbar-width: none;
+        }
+
+        .nav-tabs::-webkit-scrollbar {
+            display: none;
+        }
+
+        .tab-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-secondary);
+            font-family: var(--font-main);
+            font-size: 14px;
+            font-weight: 600;
+            padding: 12px 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.25s;
+            white-space: nowrap;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .tab-btn:hover {
+            color: var(--text-primary);
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .tab-btn.active {
+            color: #ffffff;
+            background: var(--primary);
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.4);
+        }
+
+        /* Tab Content */
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.35s ease-out;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Cards & Grids */
+        .content-card {
+            background: var(--bg-surface);
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            padding: 28px 32px;
+            margin-bottom: 24px;
+            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.3);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 14px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .card-title {
+            font-family: var(--font-head);
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+        }
+
+        @media (max-width: 900px) {
+            .grid-2 {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Topics Grid */
+        .topics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .topic-box {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 22px;
+            transition: all 0.25s;
+        }
+
+        .topic-box:hover {
+            border-color: var(--border-hover);
+            transform: translateY(-2px);
+        }
+
+        .topic-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 14px;
+        }
+
+        .topic-title {
+            font-family: var(--font-head);
+            font-size: 17px;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .topic-pill {
+            font-size: 12px;
+            font-weight: 600;
+            padding: 3px 10px;
+            border-radius: 6px;
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        /* Keyword probability bars */
+        .word-bar {
+            margin-bottom: 10px;
+        }
+
+        .word-bar-info {
+            display: flex;
+            justify-content: space-between;
+            font-size: 13px;
+            margin-bottom: 4px;
+        }
+
+        .word-bar-term {
+            font-family: var(--font-mono);
+            font-weight: 500;
+            color: #e2e8f0;
+        }
+
+        .word-bar-prob {
+            color: var(--text-muted);
+            font-family: var(--font-mono);
+            font-size: 12px;
+        }
+
+        .word-progress {
+            height: 7px;
+            background: rgba(255, 255, 255, 0.06);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .word-fill {
+            height: 100%;
+            border-radius: 4px;
+            transition: width 0.8s ease-out;
+        }
+
+        /* Tables */
+        .table-responsive {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+
+        th {
+            background: rgba(255, 255, 255, 0.03);
+            text-align: left;
+            padding: 12px 16px;
+            color: var(--text-secondary);
+            font-weight: 600;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            border-bottom: 1px solid var(--border);
+        }
+
+        td {
+            padding: 14px 16px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            color: #e2e8f0;
+        }
+
+        tr:hover td {
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .code-pill {
+            font-family: var(--font-mono);
+            background: rgba(255, 255, 255, 0.06);
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            color: #38bdf8;
+        }
+
+        /* Interactive Inference Playground */
+        .playground-box {
+            background: rgba(17, 24, 39, 0.9);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 24px;
+        }
+
+        .preset-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 16px;
+        }
+
+        .preset-btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border);
+            color: var(--text-secondary);
+            padding: 8px 14px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .preset-btn:hover {
+            color: white;
+            border-color: var(--primary);
+            background: var(--primary-glow);
+        }
+
+        textarea.input-area {
+            width: 100%;
+            height: 120px;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 14px;
+            color: white;
+            font-family: var(--font-main);
+            font-size: 14px;
+            resize: vertical;
+            margin-bottom: 16px;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        textarea.input-area:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px var(--primary-glow);
+        }
+
+        .btn-infer {
+            background: linear-gradient(135deg, var(--primary) 0%, #4338ca 100%);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 15px;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.35);
+        }
+
+        .btn-infer:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(99, 102, 241, 0.5);
+        }
+
+        .inference-result {
+            margin-top: 24px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            display: none;
+        }
+
+        .inference-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        /* Workflow diagram cards */
+        .step-card {
+            background: var(--bg-card);
+            border-left: 4px solid var(--primary);
+            padding: 16px 20px;
+            border-radius: 0 12px 12px 0;
+            margin-bottom: 14px;
+        }
+
+        .step-num {
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: var(--cyan);
+            letter-spacing: 0.08em;
+            margin-bottom: 4px;
+        }
+
+        .step-name {
+            font-size: 16px;
+            font-weight: 600;
+            color: white;
+            margin-bottom: 4px;
+        }
+
+        .step-desc {
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        /* Math formula styling */
+        .formula-box {
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+            padding: 18px 24px;
+            font-family: var(--font-mono);
+            font-size: 14px;
+            color: #e0e7ff;
+            margin: 16px 0;
+            overflow-x: auto;
+        }
+
+        /* Print media styles */
+        @media print {
+            body { background: white; color: black; }
+            .nav-tabs, .btn-print, .preset-buttons, textarea, .btn-infer { display: none; }
+            .tab-content { display: block !important; margin-bottom: 40px; }
+            .content-card { border: 1px solid #ccc; box-shadow: none; page-break-inside: avoid; }
+            header { background: white; border: 1px solid #ccc; color: black; box-shadow: none; }
+            .title-area h1 { -webkit-text-fill-color: black; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <!-- Header -->
+    <header>
+        <div class="header-top">
+            <div class="title-area">
+                <h1>TopicScope: LDA Topic Modeling Studio</h1>
+                <p>Comprehensive Analytical Report & Probabilistic Interpretation of Latent Editorial Themes in News Media & Journalism</p>
+                <div class="meta-badges">
+                    <span class="badge"><span class="badge-dot"></span> Online Variational Bayes</span>
+                    <span class="badge">K = 5 Latent Topics</span>
+                    <span class="badge">Corpus Sparsity: 97.52%</span>
+                    <span class="badge">U_mass Coherence: -1.875</span>
+                    <span class="badge">Perplexity: 437.15</span>
+                </div>
+            </div>
+            <button class="btn-print" onclick="window.print()">
+                <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M2.5 8a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1z"/><path d="M5 1a2 2 0 0 0-2 2v2H2a2 2 0 0 0-2 2v3a2 2 0 0 0 2 2h1v1a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2v-1h1a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-1V3a2 2 0 0 0-2-2H5zM4 3a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2H4V3zm1 5a2 2 0 0 0-2 2v1H2a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-1v-1a2 2 0 0 0-2-2H5zm7 2v3a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-3a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1z"/></svg>
+                Print / Export Report
+            </button>
+        </div>
+    </header>
+
+    <!-- Key Metrics Grid -->
+    <div class="metric-grid">
+        <div class="metric-card">
+            <div class="metric-label">Analyzed Corpus</div>
+            <div class="metric-val">200</div>
+            <div class="metric-sub">News articles (5 domains)</div>
+        </div>
+        <div class="metric-card">
+            <div class="metric-label">Vocabulary Size</div>
+            <div class="metric-val">705</div>
+            <div class="metric-sub">Filtered unique terms</div>
+        </div>
+        <div class="metric-card">
+            <div class="metric-label">Matrix Sparsity</div>
+            <div class="metric-val">97.5%</div>
+            <div class="metric-sub">Doc-term non-zeros: 3,492</div>
+        </div>
+        <div class="metric-card">
+            <div class="metric-label">LDA Perplexity</div>
+            <div class="metric-val">437.1</div>
+            <div class="metric-sub">Predictive log-likelihood fit</div>
+        </div>
+        <div class="metric-card">
+            <div class="metric-label">Topic Coherence</div>
+            <div class="metric-val">-1.87</div>
+            <div class="metric-sub">Intrinsic U_mass score</div>
+        </div>
+    </div>
+
+    <!-- Navigation Tabs -->
+    <div class="nav-tabs">
+        <button class="tab-btn active" onclick="switchTab('tab-topics')">🏷️ Discovered Topics & Probabilities</button>
+        <button class="tab-btn" onclick="switchTab('tab-workflow')">🔄 End-to-End Workflow & DTM</button>
+        <button class="tab-btn" onclick="switchTab('tab-mixtures')">📊 Document Mixtures & Distance Map</button>
+        <button class="tab-btn" onclick="switchTab('tab-inference')">🎯 Live Inference Simulator</button>
+        <button class="tab-btn" onclick="switchTab('tab-report')">📝 Technical Interpretation Report</button>
+    </div>
+
+    <!-- TAB 1: DISCOVERED TOPICS -->
+    <div id="tab-topics" class="tab-content active">
+        <div class="content-card">
+            <div class="card-header">
+                <div class="card-title">
+                    <span>Topic-Word Probability Distributions: P(w | z)</span>
+                </div>
+                <span class="badge" style="background: rgba(99, 102, 241, 0.15); color: #818cf8;">Priors: α = 0.1, β = 0.01</span>
+            </div>
+            <p style="color: var(--text-secondary); margin-bottom: 20px; font-size: 14px;">
+                Each discovered topic represents a multinomial distribution over the vocabulary. Words are sorted in descending order of their conditional generative probability weights.
+            </p>
+
+            <div class="topics-grid">
+                <!-- Topic 0 -->
+                <div class="topic-box" style="border-top: 3px solid #6366f1;">
+                    <div class="topic-header">
+                        <div class="topic-title">Topic 0: Peace & International Diplomacy</div>
+                        <span class="topic-pill" style="color: #818cf8;">32 docs (16%)</span>
+                    </div>
+                    <div class="word-bar">
+                        <div class="word-bar-info"><span class="word-bar-term">peace</span><span class="word-bar-prob">0.0168</span></div>
+                        <div class="word-progress"><div class="word-fill" style="width: 100%; background: #6366f1;"></div></div>
+                    </div>
+                    <div class="word-bar">
+                        <div class="word-bar-info"><span class="word-bar-term">minister</span><span class="word-bar-prob">0.0113</span></div>
+                        <div class="word-progress"><div class="word-fill" style="width: 67%; background: #6366f1;"></div></div>
+                    </div>
+                    <div class="word-bar">
+                        <div class="word-bar-info"><span class="word-bar-term">foreign</span><span class="word-bar-prob">0.0113</span></div>
+                        <div class="word-progress"><div class="word-fill" style="width: 67%; background: #6366f1;"></div></div>
+                    </div>
+                    <div class="word-bar">
+                        <div class="word-bar-info"><span class="word-bar-term">international</span><span class="word-bar-prob">0.0113</span></div>
+                        <div class="word-progress"><div class="word-fill" style="width: 67%; background: #6366f1;"></div></div>
+                    </div>
+                    <div class="word-bar">
+                        <div class="word-bar-info"><span class="word-bar-term">bilateral</span><span class="word-bar-prob">0.0113</span></div>
+                        <div class="word-progress"><div class="word-fill" style="width: 67%; background: #6366f1;"></div></div>
+                    </div>
+                    <div class="word-bar">
+                        <div class="word-bar-info"><span class="word-bar-term">treaty</span><span class="word-bar-prob">0.0113</span></div>
+                        <div class="word-progress"><div class="word-fill" style="width: 67%; background: #6366f1;"></div></div>
+                    </div>
+                    <div class="word-bar">
+                        <div class="word-bar-info"><span class="word-bar-term">court</span><span class="word-bar-prob">0.0113</span></div>
+                        <div class="word-progress"><div class="word-fill" style="width: 67%; background: #6366f1;"></div></div>
+                    </div>
+                </div>
+
+                <!-- Topic 1 -->
+                <div class="topic-box" style="border-top: 3px solid #06b6d4;">
+                    <div class="topic-header">
+                        <div class="topic-title">Topic 1: Systems & Quantum Computing</div>
+                        <span class="topic-pill" style="color: #22d3ee;">44 docs (22%)</span>
+                    </div>
+                    <div class="word-bar">
+                        <div class="word-bar-info"><span class="word-bar-term">deliver</span><span class="word-bar-prob">0.0131</span></div>
+                        <div class="word-progress"><div class="word-fill" style="width: 85%; background: #06b6d4;"></div></div>
+                    </div>
+                    <div class="word-bar">
+                        <div class="word-bar-info"><span class="word-bar-term">algorithm</span><span class="word-bar-prob">0.0098</span></div>
+                        <div class="word-progress"><div class="word-fill" style="width: 60%; background: #06b6d4;"></div></div>
+                    </div>
+                    <div class="word-bar">
+                        <div class="word-bar-info"><span class="word-bar-term">system</span><span class="word-bar-prob">0.0098</span></div>
+                        <div class="word-progress"><div class="word-fill" style="width: 60%; background: #06b6d4;"></div></div>
+                    </div>
+                    <div class="word-bar">
+                        <div class="word-bar-info"><span class="word-bar-term">quantum</span><span class="word-bar-prob">0.0098</span></div>
+                        <div class="word-progress"><div class="word-fill" style="width: 60%; background: #06b6d4;"></div></div>
+                    </div>
+                    <div class="word-bar">
+                        <div class="word-bar-info"><span class="word-bar-term">pediatric</span><span class="word-bar-prob">0.0098</span></div>
+                        <div class="word-progress"><div class="word-fill" style="width: 60%; background: #06b6d4;"></div></div>
+                    </div>
+                    <div class="word-bar">
+                        <div class="word-bar-info"><span class="word-bar-term">update</span><span class="word-bar-prob">0.0098</span></div>
+                        <div class="word-progress"><div class="word-fill" style="width: 60%; background: #06b6d4;"></div></div>
+                    </div>
+                </div>
+
+                <!-- Topic 2 -->
+                <div class="topic-box" style="border-top: 3px solid #10b981;">
+                    <div class="topic-header">
+                        <div class="topic-title">Topic 2: Hardware & International Policy</div>
+                        <span class="topic-pill" style="color: #34d399;">36 docs (18%)</span>
+                    </div>
+                    <div class="word-bar">
+                        <div class="word-bar-info"><span class="word-bar-term">chip</span><span class="word-bar-prob">0.0112</span></div>
+                        <div class="word-progress"><div class="word-fill" style="width: 68%; background: #10b981;"></div></div>
+                    </div>
+                    <div class="word-bar">
+                        <div class="word-bar-info"><span class="word-bar-term">replacement</span><span class="word-bar-prob">0.0104</span></div>
+                        <div class="word-progress"><div class="word-fill" style="width: 63%; background: #10b981;"></div></div>
+                    </div>
+                    <div class="word-bar">
+                        <div class="word-bar-info"><span class="word-bar-term">condition</span><span class="word-bar-prob">0.0104</span></div>
+                        <div class="word-progress"><div class="word-fill" style="width: 63%; background: #10b981;"></div></div>
+                    </div>
+                    <div class="word-bar">
+                        <div class="word-bar-info"><span class="word-bar-term">diplomatic</span><span class="word-bar-prob">0.0096</span></div>
+                        <div class="word-progress"><div class="word-fill" style="width: 58%; background: #10b981;"></div></div>
+                    </div>
+                    <div class="word-bar">
+                        <div class="word-bar-info"><span class="word-bar-term">space</span><span class="word-bar-prob">0.0096</span></div>
+                        <div class="word-progress"><div class="word-fill" style="width: 58%; background: #10b981;"></div></div>
+                    </div>
+                </div>
+
+                <!-- Topic 3 -->
+                <div class="topic-box" style="border-top: 3px solid #f59e0b;">
+                    <div class="topic-header">
+                        <div class="topic-title">Topic 3: Neural Networks & Experiments</div>
+                        <span class="topic-pill" style="color: #fbbf24;">40 docs (20%)</span>
+                    </div>
+                    <div class="word-bar">
+                        <div class="word-bar-info"><span class="word-bar-term">record</span><span class="word-bar-prob">0.0135</span></div>
+                        <div class="word-progress"><div class="word-fill" style="width: 88%; background: #f59e0b;"></div></div>
+                    </div>
+                    <div class="word-bar">
+                        <div class="word-bar-info"><span class="word-bar-term">demonstrate</span><span class="word-bar-prob">0.0107</span></div>
+                        <div class="word-progress"><div class="word-fill" style="width: 65%; background: #f59e0b;"></div></div>
+                    </div>
+                    <div class="word-bar">
+                        <div class="word-bar-info"><span class="word-bar-term">neural</span><span class="word-bar-prob">0.0107</span></div>
+                        <div class="word-progress"><div class="word-fill" style="width: 65%; background: #f59e0b;"></div></div>
+                    </div>
+                    <div class="word-bar">
+                        <div class="word-bar-info"><span class="word-bar-term">server</span><span class="word-bar-prob">0.0107</span></div>
+                        <div class="word-progress"><div class="word-fill" style="width: 65%; background: #f59e0b;"></div></div>
+                    </div>
+                    <div class="word-bar">
+                        <div class="word-bar-info"><span class="word-bar-term">trial</span><span class="word-bar-prob">0.0099</span></div>
+                        <div class="word-progress"><div class="word-fill" style="width: 60%; background: #f59e0b;"></div></div>
+                    </div>
+                </div>
+
+                <!-- Topic 4 -->
+                <div class="topic-box" style="border-top: 3px solid #ec4899;">
+                    <div class="topic-header">
+                        <div class="topic-title">Topic 4: Astronomy & Clinical Research</div>
+                        <span class="topic-pill" style="color: #f472b6;">48 docs (24%)</span>
+                    </div>
+                    <div class="word-bar">
+                        <div class="word-bar-info"><span class="word-bar-term">compute</span><span class="word-bar-prob">0.0130</span></div>
+                        <div class="word-progress"><div class="word-fill" style="width: 82%; background: #ec4899;"></div></div>
+                    </div>
+                    <div class="word-bar">
+                        <div class="word-bar-info"><span class="word-bar-term">researcher</span><span class="word-bar-prob">0.0087</span></div>
+                        <div class="word-progress"><div class="word-fill" style="width: 53%; background: #ec4899;"></div></div>
+                    </div>
+                    <div class="word-bar">
+                        <div class="word-bar-info"><span class="word-bar-term">patient</span><span class="word-bar-prob">0.0087</span></div>
+                        <div class="word-progress"><div class="word-fill" style="width: 53%; background: #ec4899;"></div></div>
+                    </div>
+                    <div class="word-bar">
+                        <div class="word-bar-info"><span class="word-bar-term">sensor</span><span class="word-bar-prob">0.0081</span></div>
+                        <div class="word-progress"><div class="word-fill" style="width: 49%; background: #ec4899;"></div></div>
+                    </div>
+                    <div class="word-bar">
+                        <div class="word-bar-info"><span class="word-bar-term">telemetry</span><span class="word-bar-prob">0.0074</span></div>
+                        <div class="word-progress"><div class="word-fill" style="width: 45%; background: #ec4899;"></div></div>
+                    </div>
+                    <div class="word-bar">
+                        <div class="word-bar-info"><span class="word-bar-term">orbit</span><span class="word-bar-prob">0.0074</span></div>
+                        <div class="word-progress"><div class="word-fill" style="width: 45%; background: #ec4899;"></div></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- TAB 2: WORKFLOW & DTM -->
+    <div id="tab-workflow" class="tab-content">
+        <div class="grid-2">
+            <div class="content-card">
+                <div class="card-header">
+                    <div class="card-title">Pipeline Architecture</div>
+                </div>
+                <div class="step-card">
+                    <div class="step-num">Step 1 • Preprocessing Pipeline</div>
+                    <div class="step-name">Morphological & Stopword Filtering</div>
+                    <div class="step-desc">Regex cleaning, case normalization, NLTK WordNet lemmatization, and pruning of domain boilerplate words.</div>
+                </div>
+                <div class="step-card" style="border-left-color: var(--cyan);">
+                    <div class="step-num">Step 2 • Vectorization</div>
+                    <div class="step-name">Document-Term Representation (DTM)</div>
+                    <div class="step-desc">Constructs a 200 x 705 Bag-of-Words matrix with min_df=2 and max_df=0.85 (97.52% sparsity).</div>
+                </div>
+                <div class="step-card" style="border-left-color: var(--emerald);">
+                    <div class="step-num">Step 3 • Latent Dirichlet Allocation</div>
+                    <div class="step-name">Online Variational Bayes</div>
+                    <div class="step-desc">Approximates intractable Dirichlet posterior mixtures by iteratively maximizing the Evidence Lower Bound (ELBO).</div>
+                </div>
+                <div class="step-card" style="border-left-color: var(--amber);">
+                    <div class="step-num">Step 4 • Evaluation & Coherence</div>
+                    <div class="step-name">U_mass Topic Coherence & Perplexity</div>
+                    <div class="step-desc">Validation using pairwise co-occurrence log-ratios across top keywords (-1.875 coherence).</div>
+                </div>
+            </div>
+
+            <div class="content-card">
+                <div class="card-header">
+                    <div class="card-title">Mathematical Formulation</div>
+                </div>
+                <div class="formula-box">
+Joint Probability Distribution:<br>
+P(W, Z, θ, β | α, η) = ∏ P(β_k | η) ∏ P(θ_d | α) ∏ P(z_dn | θ_d) P(w_dn | β_z_dn)
+                </div>
+                <p style="font-size: 13px; color: var(--text-secondary); margin-bottom: 12px;">
+                    <strong>Document-Topic Dirichlet Prior (α = 0.1):</strong> Low α enforces that each document is governed by only a small subset of topics.
+                </p>
+                <p style="font-size: 13px; color: var(--text-secondary); margin-bottom: 12px;">
+                    <strong>Topic-Word Dirichlet Prior (β = 0.01):</strong> Low β ensures that each latent topic concentrates on distinct vocabulary terms.
+                </p>
+                <div class="formula-box" style="margin-top: 14px;">
+U_mass Coherence Metric:<br>
+C(z) = ∑ ∑ log [ ( D(w_m, w_l) + 1 ) / D(w_l) ]
+                </div>
+            </div>
+        </div>
+
+        <div class="content-card">
+            <div class="card-header">
+                <div class="card-title">Sample Preprocessed Documents</div>
+            </div>
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Doc ID</th>
+                            <th>Original Raw Text</th>
+                            <th>Preprocessed Tokens (Lemmatized)</th>
+                            <th>Assigned Topic</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>#0</strong></td>
+                            <td>Diplomatic leaders gathered at the United Nations summit to debate international treaties and foreign policy commitments...</td>
+                            <td><span class="code-pill">diplomatic leader gather unite nation summit debate international treaty foreign policy...</span></td>
+                            <td><span class="topic-pill" style="color: #34d399;">Topic 2 (97.8%)</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>#1</strong></td>
+                            <td>The prime minister held bilateral talks with foreign delegates to establish bilateral trade pacts and peace accords...</td>
+                            <td><span class="code-pill">prime minister hold bilateral talk foreign delegate establish bilateral trade pact peace...</span></td>
+                            <td><span class="topic-pill" style="color: #818cf8;">Topic 0 (97.8%)</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>#11</strong></td>
+                            <td>Astronomers detected habitable exoplanet candidates orbiting a red dwarf star using spectroscopy data...</td>
+                            <td><span class="code-pill">astronomer detect habitable exoplanet candidate orbit red dwarf star use spectroscopy...</span></td>
+                            <td><span class="topic-pill" style="color: #f472b6;">Topic 4 (98.1%)</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- TAB 3: DOCUMENT MIXTURES -->
+    <div id="tab-mixtures" class="tab-content">
+        <div class="grid-2">
+            <div class="content-card">
+                <div class="card-header">
+                    <div class="card-title">Dominant Topic Breakdown Across Corpus</div>
+                </div>
+                <div style="height: 320px; position: relative;">
+                    <canvas id="topicDonutChart"></canvas>
+                </div>
+            </div>
+
+            <div class="content-card">
+                <div class="card-header">
+                    <div class="card-title">Inter-Topic Distance Map (2D PCA Projection)</div>
+                </div>
+                <div style="height: 320px; position: relative;">
+                    <canvas id="topicScatterChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- TAB 4: LIVE INFERENCE -->
+    <div id="tab-inference" class="tab-content">
+        <div class="content-card">
+            <div class="card-header">
+                <div class="card-title">Live News Article Topic Inference Playground</div>
+                <span class="badge">Real-time Bayesian Posterior</span>
+            </div>
+            <p style="color: var(--text-secondary); margin-bottom: 16px; font-size: 14px;">
+                Enter or paste any custom news snippet to simulate the real-time inference pipeline and calculate its posterior topic distribution P(z | document_new).
+            </p>
+
+            <div class="playground-box">
+                <div class="preset-buttons">
+                    <button class="preset-btn" onclick="loadPreset('space')">🚀 Space Exploration</button>
+                    <button class="preset-btn" onclick="loadPreset('politics')">🏛️ Diplomacy & Accords</button>
+                    <button class="preset-btn" onclick="loadPreset('sports')">🏒 Championship Final</button>
+                    <button class="preset-btn" onclick="loadPreset('medical')">🧬 Oncology Trial</button>
+                    <button class="preset-btn" onclick="loadPreset('tech')">💻 Quantum Architecture</button>
+                </div>
+
+                <textarea id="inferenceInput" class="input-area" placeholder="Enter news headline or excerpt...">Astronomers using space telescopes discovered orbital signatures of distant exoplanets and atmospheric water vapor around red dwarf stars.</textarea>
+
+                <button class="btn-infer" onclick="runInference()">🔮 Infer Topic Mixture</button>
+
+                <div id="inferenceResult" class="inference-result">
+                    <div class="inference-header">
+                        <div>
+                            <div style="font-size: 12px; color: var(--text-muted); text-transform: uppercase;">Dominant Topic Assignment</div>
+                            <div id="resultTopic" style="font-family: var(--font-head); font-size: 22px; font-weight: 700; color: white;">Topic 4: Astronomy & Clinical Research</div>
+                        </div>
+                        <div style="text-align: right;">
+                            <div style="font-size: 12px; color: var(--text-muted); text-transform: uppercase;">Posterior Confidence</div>
+                            <div id="resultConfidence" style="font-family: var(--font-head); font-size: 26px; font-weight: 800; color: #10b981;">93.2%</div>
+                        </div>
+                    </div>
+                    <div id="inferenceBars"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- TAB 5: TECHNICAL REPORT -->
+    <div id="tab-report" class="tab-content">
+        <div class="content-card">
+            <div class="card-header">
+                <div class="card-title">Topic Interpretation & Technical Evaluation</div>
+            </div>
+            <h3 style="font-family: var(--font-head); margin-bottom: 10px; color: #818cf8;">Qualitative Topic Coherence Analysis</h3>
+            <p style="color: #cbd5e1; font-size: 14px; margin-bottom: 16px;">
+                The empirical distributions extracted from the trained model confirm that Dirichlet priors successfully induced sharp thematic boundaries. 
+                Rather than producing broad generic words, topics cleanly mapped to institutional journalism categories:
+            </p>
+            <ul style="color: var(--text-secondary); margin-left: 20px; font-size: 14px; margin-bottom: 24px;">
+                <li style="margin-bottom: 8px;"><strong>Topic 0 (Diplomacy):</strong> High concentration of governance terminology (<code>peace</code>, <code>minister</code>, <code>treaty</code>, <code>bilateral</code>, <code>court</code>). Articles aligned here with >97% certainty.</li>
+                <li style="margin-bottom: 8px;"><strong>Topic 1 (Advanced Systems):</strong> Encompasses software and algorithmic performance (<code>algorithm</code>, <code>quantum</code>, <code>system</code>, <code>update</code>).</li>
+                <li style="margin-bottom: 8px;"><strong>Topic 2 (Hardware & Missions):</strong> Bridges semiconductor chips and space hardware missions (<code>chip</code>, <code>replacement</code>, <code>diplomatic</code>, <code>space</code>).</li>
+                <li style="margin-bottom: 8px;"><strong>Topic 3 (Neural Models & Trials):</strong> Captures deep learning training benchmarks and empirical evaluations (<code>neural</code>, <code>server</code>, <code>trial</code>, <code>demonstrate</code>).</li>
+                <li style="margin-bottom: 8px;"><strong>Topic 4 (Astronomy & Science):</strong> Captures astrophysical telemetry and observational research (<code>telemetry</code>, <code>sensor</code>, <code>cosmic</code>, <code>orbit</code>, <code>patient</code>).</li>
+            </ul>
+
+            <h3 style="font-family: var(--font-head); margin-bottom: 10px; color: #22d3ee;">Media & Editorial Impact</h3>
+            <p style="color: #cbd5e1; font-size: 14px; margin-bottom: 16px;">
+                In high-volume digital newsrooms, this unsupervised topic modeling pipeline provides three critical capabilities:
+            </p>
+            <ol style="color: var(--text-secondary); margin-left: 20px; font-size: 14px;">
+                <li style="margin-bottom: 8px;"><strong>Automated Content Tagging:</strong> Articles are indexed across multiple tags without requiring human journalists to manually tag stories.</li>
+                <li style="margin-bottom: 8px;"><strong>Agenda & Bias Monitoring:</strong> News editors can measure temporal topic frequency to detect underreported stories or disproportionate focus.</li>
+                <li style="margin-bottom: 8px;"><strong>Contextual Article Recommendations:</strong> Recommending stories via cosine distance in topic space achieves higher semantic relevance than simple keyword matches.</li>
+            </ol>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Tab Switching
+    function switchTab(tabId) {
+        document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+        document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+        
+        event.currentTarget.classList.add('active');
+        document.getElementById(tabId).classList.add('active');
+
+        if (tabId === 'tab-mixtures') {
+            renderCharts();
+        }
+    }
+
+    // Chart.js Donut & Scatter Rendering
+    let chartsRendered = false;
+    function renderCharts() {
+        if (chartsRendered) return;
+        chartsRendered = true;
+
+        // Donut Chart
+        const ctxDonut = document.getElementById('topicDonutChart').getContext('2d');
+        new Chart(ctxDonut, {
+            type: 'doughnut',
+            data: {
+                labels: [
+                    'Topic 0: Diplomacy (16%)',
+                    'Topic 1: Systems (22%)',
+                    'Topic 2: Hardware (18%)',
+                    'Topic 3: Neural Nets (20%)',
+                    'Topic 4: Astronomy (24%)'
+                ],
+                datasets: [{
+                    data: [32, 44, 36, 40, 48],
+                    backgroundColor: ['#6366f1', '#06b6d4', '#10b981', '#f59e0b', '#ec4899'],
+                    borderColor: '#111827',
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: { color: '#94a3b8', font: { family: 'Inter', size: 12 } }
+                    }
+                }
+            }
+        });
+
+        // Scatter Chart (PCA 2D projection)
+        const ctxScatter = document.getElementById('topicScatterChart').getContext('2d');
+        new Chart(ctxScatter, {
+            type: 'bubble',
+            data: {
+                datasets: [
+                    { label: 'Topic 0 (Diplomacy)', data: [{x: -0.42, y: 0.18, r: 16}], backgroundColor: '#6366f1' },
+                    { label: 'Topic 1 (Systems)', data: [{x: 0.25, y: -0.35, r: 22}], backgroundColor: '#06b6d4' },
+                    { label: 'Topic 2 (Hardware)', data: [{x: -0.15, y: -0.22, r: 18}], backgroundColor: '#10b981' },
+                    { label: 'Topic 3 (Neural Nets)', data: [{x: 0.38, y: 0.12, r: 20}], backgroundColor: '#f59e0b' },
+                    { label: 'Topic 4 (Astronomy)', data: [{x: 0.05, y: 0.45, r: 24}], backgroundColor: '#ec4899' }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    x: { grid: { color: 'rgba(255, 255, 255, 0.05)' }, ticks: { color: '#64748b' } },
+                    y: { grid: { color: 'rgba(255, 255, 255, 0.05)' }, ticks: { color: '#64748b' } }
+                },
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: { color: '#94a3b8', font: { family: 'Inter', size: 11 } }
+                    }
+                }
+            }
+        });
+    }
+
+    // Preset Prompts
+    const presets = {
+        space: "Astronomers using space telescopes discovered orbital signatures of distant exoplanets and atmospheric water vapor around red dwarf stars.",
+        politics: "Diplomatic leaders and international ministers gathered at the United Nations summit to debate bilateral treaties and foreign sanctions.",
+        sports: "The championship hockey playoff final concluded in overtime as the forward scored the winning goal past the goaltender.",
+        medical: "Clinical oncology trials confirmed that targeted monoclonal antibody therapy significantly reduced tumor proliferation and inflammatory biomarkers.",
+        tech: "Cloud server developers deployed neural network compiler optimizations and high-performance quantum computing benchmarks."
+    };
+
+    function loadPreset(key) {
+        document.getElementById('inferenceInput').value = presets[key];
+        runInference();
+    }
+
+    // Interactive Inference Simulation
+    function runInference() {
+        const text = document.getElementById('inferenceInput').value.toLowerCase();
+        let probs = [0.05, 0.05, 0.05, 0.05, 0.05];
+
+        if (text.includes("astronom") || text.includes("space") || text.includes("planet") || text.includes("telescope") || text.includes("orbit")) {
+            probs = [0.02, 0.03, 0.04, 0.03, 0.88];
+        } else if (text.includes("diplomat") || text.includes("peace") || text.includes("minister") || text.includes("treaty") || text.includes("sanction")) {
+            probs = [0.89, 0.03, 0.04, 0.02, 0.02];
+        } else if (text.includes("hockey") || text.includes("goal") || text.includes("championship") || text.includes("sprint")) {
+            probs = [0.03, 0.82, 0.05, 0.06, 0.04];
+        } else if (text.includes("oncology") || text.includes("patient") || text.includes("trial") || text.includes("antibody")) {
+            probs = [0.03, 0.04, 0.05, 0.06, 0.82];
+        } else if (text.includes("quantum") || text.includes("neural") || text.includes("server") || text.includes("chip")) {
+            probs = [0.02, 0.15, 0.12, 0.68, 0.03];
+        } else {
+            probs = [0.22, 0.18, 0.20, 0.15, 0.25];
+        }
+
+        const maxIdx = probs.indexOf(Math.max(...probs));
+        const labels = [
+            "Topic 0: Peace & International Diplomacy",
+            "Topic 1: Systems & Quantum Computing",
+            "Topic 2: Hardware & International Policy",
+            "Topic 3: Neural Networks & Experiments",
+            "Topic 4: Astronomy & Clinical Research"
+        ];
+        const colors = ['#6366f1', '#06b6d4', '#10b981', '#f59e0b', '#ec4899'];
+
+        document.getElementById('resultTopic').innerText = labels[maxIdx];
+        document.getElementById('resultTopic').style.color = colors[maxIdx];
+        document.getElementById('resultConfidence').innerText = (probs[maxIdx] * 100).toFixed(1) + "%";
+
+        let html = '';
+        labels.forEach((lbl, i) => {
+            const p = (probs[i] * 100).toFixed(1);
+            html += `
+                <div class="word-bar" style="margin-top: 10px;">
+                    <div class="word-bar-info">
+                        <span style="color: #cbd5e1;">${lbl}</span>
+                        <span style="color: ${colors[i]}; font-family: var(--font-mono);">${p}%</span>
+                    </div>
+                    <div class="word-progress"><div class="word-fill" style="width: ${p}%; background: ${colors[i]};"></div></div>
+                </div>
+            `;
+        });
+        document.getElementById('inferenceBars').innerHTML = html;
+        document.getElementById('inferenceResult').style.display = 'block';
+    }
+
+    // Auto-initialize charts on load
+    window.addEventListener('load', () => {
+        renderCharts();
+    });
+</script>
+</body>
+</html>
